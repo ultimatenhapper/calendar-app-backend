@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const dotenv = require("dotenv");
 const { dbConnection } = require("./db/config");
+
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.static("public"));
 app.use(express.json());
 //Routes
 app.use("/api/v1/auth", require("./routes/auth"));
+app.use("/api/v1/events", require("./routes/events"))
 
 app.listen(process.env.PORT, () => {
   console.log(`Servidor corriendo en puerto ${process.env.PORT}...`);
