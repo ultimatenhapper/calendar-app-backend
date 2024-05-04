@@ -1,15 +1,22 @@
-const express = require('express')
-const dotenv = require('dotenv')
+const express = require("express");
+const cors = require('cors');
+const dotenv = require("dotenv");
+const { dbConnection } = require("./db/config");
+dotenv.config();
 
-dotenv.config()
+const app = express();
 
-const app = express()
+dbConnection();
 
-app.use('/api/auth', require('./routes/auth'))
-
-
-app.use(express.static('public'));
+//CORS
+app.use(cors())
+//Public directory
+app.use(express.static("public"));
+//Read and parse body
+app.use(express.json());
+//Routes
+app.use("/api/v1/auth", require("./routes/auth"));
 
 app.listen(process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${process.env.PORT}...`)
-})
+  console.log(`Servidor corriendo en puerto ${process.env.PORT}...`);
+});
