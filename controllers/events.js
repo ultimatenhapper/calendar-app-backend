@@ -21,12 +21,21 @@ const createEvent = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-  const events = await Event.find().populate("user", "name");
+  const uid = req.uid;
 
-  res.status(200).json({
-    ok: true,
-    events,
-  });
+  try {
+    const events = await Event.find({ user: uid }).populate("user", "name");
+  
+    res.status(200).json({
+      ok: true,
+      events,
+    });
+  } catch(error){
+    res.status(500).json({
+      ok: false,
+      msg: "Problem fetching events",
+    });
+  }
 };
 
 const getEvent = async (req, res) => {
@@ -69,7 +78,7 @@ const updateEvent = async (req, res) => {
       event: updatedEvent,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       ok: false,
       msg: "Problem updating event",

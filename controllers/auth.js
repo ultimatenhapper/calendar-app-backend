@@ -4,7 +4,7 @@ const { generateJWT } = require("../helpers/jwt");
 
 const createUser = async (req, res) => {
   const { email, password } = req.body;
-
+  // console.log({ email, password })
   try {
     let user = await User.findOne({ email });
 
@@ -16,6 +16,8 @@ const createUser = async (req, res) => {
     }
 
     user = new User(req.body);
+    // console.log({user})
+
     const salt = bcrypt.genSaltSync();
     user.password = bcrypt.hashSync(password, salt);
     await user.save();
@@ -30,6 +32,7 @@ const createUser = async (req, res) => {
       token,
     });
   } catch (error) {
+    // console.log(error);
     res.status(500).json({
       ok: false,
       msg: "Database error creating user",
@@ -84,6 +87,8 @@ const renewToken = async (req, res) => {
   res.json({
     ok: true,
     message: "renew",
+    uid,
+    name,
     token,
   });
 };
